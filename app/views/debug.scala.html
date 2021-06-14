@@ -1,0 +1,16 @@
+@import models._
+@import controllers._
+@import helper._
+
+
+@(title: String,post: MyBoard)
+
+@main(title) {
+  <h1>MyBoard</h1>
+  <h2>投稿された内容</h2>
+  <div id="PostForm">
+     名前：@post.name<br/>
+     Email:@post.email<br/>
+     本文:@Html(post.message.replaceAll("(\r\n|\r|\n)","<br/>"))
+  </div>
+}

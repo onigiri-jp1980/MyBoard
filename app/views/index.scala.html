@@ -1,0 +1,57 @@
+@import models._
+@import controllers._
+@import helper._
+
+
+@(title:String,newPost: Form[MyBoard], posts: List[MyBoard])(implicit request: Http.Request, messagesProvider: MessagesProvider)
+@implicitField = @{ FieldConstructor(myFieldConstructorTemplate.f) }
+
+@main(title) {
+  <h1>MyBoard</h1>
+  <h2>新規投稿</h2>
+  @form(action = routes.Application.add()){
+    @CSRF.formField
+    @inputText(
+      field = newPost("name"),
+      args =
+        Symbol("size") -> 40,
+        Symbol("_label")-> "お名前(必須)",
+        Symbol("placeholder") -> "お名前を入力してください")
+    @inputText(
+      field = newPost("email"),
+      args =
+        Symbol("size") -> 40,
+        Symbol("_label") -> "Email",
+        Symbol("placeholder") -> "メールアドレスを入力してください")
+    @textarea(
+      field= newPost("message"),
+      args =
+        Symbol("rows") -> 5,
+        Symbol("cols") -> 40,
+        Symbol("_label") -> "本文(必須)",
+        Symbol("placeholder") -> "本文を入力してください")
+    <input type="submit" value="投稿"/>
+  }
+  @for(post <- posts){
+    <p>
+      <h3>No.@post.id</h3>
+      お名前：@post.name<br />
+      @if(post.email != ""){
+        Email：<a href="mailto:@post.email">@post.email</a><br />
+      }
+    </p>
+    <h4>本文</h4>
+    @Html(post.message.replaceAll("(\r\n|\r|\n)","<br/>"))
+    <div class="timpstamp" style="text-align: right">
+    投稿日時：@post.postedAt<br />
+    更新日時：@post.updatedAt<br />
+    <button name="" onclick="location.href='@routes.Application.edit(post.id)'" style="display: inline">更新</button>
+    <form method="post" action="@CSRF(routes.Application.delete(post.id))" style="display: inline">
+      <input type="hidden" name="id" value="@post.id" />
+      <input type="submit" value="削除" style="display: inline"/>
+    </form>
+    </div>
+    <hr />
+  }
+}
+

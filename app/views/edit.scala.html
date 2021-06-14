@@ -1,0 +1,32 @@
+@import models._
+@import helper._
+@(title: String,newPost: Form[MyBoard],post: MyBoard)(implicit request: Http.Request, messagesProvider: MessagesProvider)
+@implicitField = @{ FieldConstructor(myFieldConstructorTemplate.f) }
+@main(title) {
+<h2>投稿の更新</h2>
+
+  @form(action = routes.Application.update(post.id)){
+    @CSRF.formField
+    @inputText(
+      field = newPost("name"),
+      args =
+      Symbol("size") -> 40,
+      Symbol("_label") -> "お名前(必須)",
+      Symbol("placeholder") -> "お名前を入力してください"),
+
+    @inputText(
+      field = newPost("email"),
+      args =
+      Symbol("size") -> 40,
+      Symbol("_label") -> "Email",
+      Symbol("placeholder") -> "メールアドレスを入力してください")
+    @textarea(
+      field= newPost("message"),
+      args =
+        Symbol("rows") -> 5,
+        Symbol("cols") -> 40,
+        Symbol("_label") -> "本文(必須)",
+        Symbol("placeholder") -> "本文を入力してください")
+    <input type="submit" value="投稿"/>
+  }
+}

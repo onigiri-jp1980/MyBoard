@@ -1,0 +1,16 @@
+@(title: String,mesg: String)
+
+@main(title) {
+  <h2>新規投稿</h2>
+  <p>@mesg</p>
+<h2>投稿の更新</h2>
+<form method="post" action="@routes.Application.add()">
+  <input type="hidden" name="id" value=""<br/>
+  名前：<input type="text" name="name" value=""><br/>
+  Email:<input type="text" name="email" size="30" value=""<br/>
+  <div id="postMessage">
+    <textarea name="message" rows="10" cols="30"></textarea>
+  </div>
+  <input type="submit" value="更新"/>
+</form>
+}
